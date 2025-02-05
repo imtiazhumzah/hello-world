@@ -1,0 +1,215 @@
+/* ASSIGNMENT 1
+
+PLEASE WRITE YOUR CODE BELOW EACH EXERCISE 
+PLEASE DON'T SUBMIT ANYTHING ELSE, JUST THIS SCRIPT FILE WITH YOUR CODE UNDER EACH EXERCISE
+TOTAL MARKS: 30
+
+*/
+
+
+
+
+-- Q1 [5 marks]
+-- Each invoice_id has a middle number (for e.g. 46 in 727-46-3608). Write a query to get each middle number and the count of invoices for that middle number
+-- (you will first need to figure out how to create a column in the select clause to extract the invoice_middle_number (hint: nested substring_index() can help) and then group by this column)
+-- order your result by invoice_middle_number in ascending order
+
+
+SELECT 
+    
+	SUBSTRING(Invoice, 
+POSITION('-' IN Invoice) + 1,
+ POSITION('-' IN Invoice) - 1
+    ) AS invoice_middle_number,
+ 
+	COUNT(*) AS invoice_count
+
+FROM 
+    smarketsales
+
+GROUP BY 
+    invoice_middle_number
+
+ORDER BY invoice_middle_number ASC;
+
+
+
+
+
+
+
+-- Q2 [5 marks]
+-- Get product_line, unit_price, and a label for each unit_price called price_category
+-- unit_price greater than 70 is expensive
+-- unit_price ranging from 40 to 70 is moderately expensive
+-- unit_price less than 40 is cheap
+-- order your result by the unit_price in descending order
+
+
+SELECT 
+    product_line,
+    "unit price",
+    
+	CASE
+        
+	WHEN "unit price" > 70 THEN 'expensive'
+      
+	WHEN "unit price" BETWEEN 40 AND 70 THEN 'moderately expensive'
+      
+	WHEN "unit price" < 40 THEN 'cheap'
+   
+ 	END AS price_category
+
+FROM 
+    smarketsales
+
+ORDER BY 
+    "unit price" DESC;
+
+
+
+
+
+
+
+
+-- Q3 [3 marks]
+-- Continuing from the query above, find out the count of invoices for each price_category
+-- order your result by price_category in ascending order
+
+
+SELECT 
+    product_line,
+    "unit price",
+    CASE
+        WHEN "unit price" > 70 THEN 'expensive'
+        WHEN "unit price" BETWEEN 40 AND 70 THEN 'moderately expensive'
+        WHEN "unit price" < 40 THEN 'cheap'
+    END AS price_category,
+    COUNT(*) AS invoice_count
+FROM 
+    smarketsales
+GROUP BY
+    product_line,
+    "unit price",
+    price_category
+ORDER BY 
+    price_category ASC;
+
+
+
+
+
+
+
+
+-- Q4 [5 marks]
+-- For all invoices EXCEPT for the 'Fashion accessories' and 'Health and beauty' invoices:
+-- Return branch name and total tax for each branch that has a total tax greater than 8000
+-- Round off total tax to 3 dp
+-- Order result by branch in ascending order
+
+
+SELECT 
+    Branch,
+    
+ROUND(SUM("Tax 5%"), 3) AS total_tax
+
+FROM 
+    smarketsales
+
+WHERE 
+    product_line NOT IN ('Fashion accessories', 'Health and beauty')
+
+GROUP BY 
+    Branch
+HAVING 
+    SUM("Tax 5%") > 8000
+
+ORDER BY 
+    Branch ASC;
+
+
+
+
+
+
+
+-- Q5 [2 marks]
+-- Add a column called shipping_charges to the table. Give it an appropriate datatype.
+
+alter table smarketsales add column shipping_charges float; 
+
+
+
+
+
+
+
+
+-- Q6 [5 marks]
+-- Update this shipping column in the following way:
+-- If the invoice's total price is greater than 1000, then the shipping is free
+-- If the invoice's total price is less than 1000, then the shipping is 250
+-- (total price is unit_price * quantity + tax_5pct)
+
+
+SELECT 
+    invoice,
+    unit price,
+    quantity,
+    "Tax 5%",
+    (unit_price * quantity + tax_5pct) AS total_price,
+ 
+CASE
+        
+	WHEN (unit_price * quantity + "Tax 5%") > 1000 THEN 0
+       
+	ELSE 250
+    
+END AS shipping
+
+
+FROM 
+    smarketsales;
+UPDATE 
+    smarketsales
+ 
+SET 
+    shipping_charges = CASE
+        
+	WHEN ("unit price" * quantity + "Tax 5%") > 1000 THEN 0  
+	  END;
+
+
+
+
+
+
+
+
+-- Q7 [5 marks]
+-- Return city, product_line and PER city PER product_line, show the following stats:
+( not solved)
+-- number of invoices as invoice_count
+
+-- number of free shipping orders as free_shipping_orders_count
+
+-- number of paid shipping orders as paid_shipping_orders_count
+
+-- total of shipping_charges as total_shipping
+
+-- finally, order result by city in ascending order and product_line in descending order
+
+
+
+
+
+
+
+
+
+
+
+
+
