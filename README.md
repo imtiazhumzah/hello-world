@@ -33,7 +33,7 @@ I am passionate about continuous learning and growth. If you're interested in co
 Get in Touch
 
 - Email:    imtiazhumzah@gmail.com
-- LinkedIn: https://www.linkedin.com/in/imtiaz-ali-728ab350/
+- LinkedIn: https://www.linkedin.com/in/imtiaz-ali-ab11162a5/
 
 
 Thank you for visiting my profile! Let's connect and collaborate on exciting data science projects!
